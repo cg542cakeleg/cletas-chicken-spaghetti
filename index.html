@@ -223,6 +223,76 @@
     ::-webkit-scrollbar { width:4px; height:4px; }
     ::-webkit-scrollbar-track { background:var(--bg); }
     ::-webkit-scrollbar-thumb { background:rgba(200,148,61,0.25); border-radius:2px; }
+
+    /* ── Print styles ── */
+    @media print {
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+      body { background: #fff !important; color: #1a1a1a !important; font-size: 11pt; }
+
+      /* show all panels, hide nav chrome */
+      nav, footer { display: none !important; }
+      .hidden { display: block !important; }
+      .fade-in { animation: none !important; }
+
+      /* reset dark colors to print-friendly */
+      #app { background: #fff; }
+      header {
+        background: #f5f0e8 !important;
+        color: #1a1a1a !important;
+        padding: 24pt 0 16pt !important;
+      }
+      header * { color: #1a1a1a !important; }
+      header svg { display: none; }
+      header .grain::after { display: none; }
+      header div[style*="position:absolute"] { display: none; } /* corner marks & glow */
+
+      /* print button hidden */
+      button[onclick="window.print()"] { display: none !important; }
+
+      /* section headings */
+      h1 { font-size: 28pt !important; margin-bottom: 4pt !important; }
+      h2 { font-size: 16pt !important; margin-top: 18pt !important; margin-bottom: 8pt !important; page-break-after: avoid; }
+      h3 { font-size: 12pt !important; }
+
+      /* ornamental dividers */
+      .orn { margin-bottom: 6pt !important; }
+      .orn::before, .orn::after { opacity: 0.3; }
+
+      /* ingredients */
+      .ing-header { background: #f0ece4 !important; color: #5a4a2a !important; border-color: #d4b87a !important; font-size: 8pt !important; padding: 6pt 14pt !important; }
+      .ing-row { padding: 5pt 14pt !important; border-bottom-color: #e8e0d0 !important; }
+      .ing-row:hover { background: none !important; }
+      .ing-name { color: #1a1a1a !important; font-size: 10.5pt !important; }
+      .ing-qty { color: #8a6a30 !important; font-size: 10.5pt !important; }
+
+      /* steps */
+      .step { background: #faf7f2 !important; border-color: #e0d8c8 !important; page-break-inside: avoid; margin-bottom: 8pt !important; padding: 10pt 14pt 10pt 48pt !important; }
+      .step-ghost { opacity: 0.04 !important; }
+      .step-badge { border-color: #c8943d !important; color: #c8943d !important; }
+      .steps-wrap > .step { opacity: 1 !important; animation: none !important; }
+
+      /* tips */
+      .tip-card { background: #faf7f2 !important; border-color: #e0d8c8 !important; page-break-inside: avoid; }
+      .tip-card::before { background: #c8943d !important; }
+      blockquote { background: #f5f0e8 !important; border-left-color: #c8943d !important; }
+
+      /* nutrition bars */
+      .bar-track { background: #e8e0d0 !important; }
+      .bar-fill { background: #c8943d !important; }
+      .macro-cell { border-right-color: #e0d8c8 !important; }
+      .macro-val { color: #8a6a30 !important; }
+
+      /* surface cards */
+      [style*="background:var(--surface)"] { background: #faf7f2 !important; }
+      [style*="border:1px solid var(--border-sub)"] { border-color: #e0d8c8 !important; }
+
+      /* section labels above each group */
+      main section { page-break-inside: avoid; }
+      main section + section { margin-top: 16pt; border-top: 1pt solid #e0d8c8; padding-top: 16pt; }
+
+      main { max-width: 100% !important; padding: 12pt 24pt !important; }
+    }
   </style>
 </head>
 <body class="h-full">
@@ -268,7 +338,16 @@
           <span class="font-display" style="font-size:1.15rem;font-weight:600;color:var(--text);">375°F</span>
         </div>
       </div>
+
+      <!-- Print button -->
+      <div class="text-center mt-8">
+        <button onclick="window.print()" style="display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border:1px solid rgba(200,148,61,0.35);background:rgba(200,148,61,0.07);color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:0.22em;text-transform:uppercase;cursor:pointer;transition:background 0.2s,border-color 0.2s;" onmouseover="this.style.background='rgba(200,148,61,0.14)';this.style.borderColor='rgba(200,148,61,0.6)'" onmouseout="this.style.background='rgba(200,148,61,0.07)';this.style.borderColor='rgba(200,148,61,0.35)'">
+          <i data-lucide="printer" style="width:14px;height:14px;"></i>
+          Print or Save as PDF
+        </button>
+      </div>
     </div>
+
     <svg class="w-full" viewBox="0 0 1440 52" fill="none" preserveAspectRatio="none" style="display:block;margin-bottom:-1px;">
       <path d="M0 52V18C200 46 480 4 720 18C960 32 1240 6 1440 22V52H0Z" fill="var(--bg)"/>
     </svg>
