@@ -67,7 +67,7 @@
     }
     .orn span {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 10px;
+      font-size: 12px;
       letter-spacing: 0.45em;
       text-transform: uppercase;
       color: var(--gold);
@@ -77,7 +77,7 @@
     /* ── Ingredient table ── */
     .ing-header {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 11px;
+      font-size: 13px;
       font-weight: 600;
       letter-spacing: 0.35em;
       text-transform: uppercase;
@@ -181,7 +181,7 @@
       margin-bottom: 5px;
     }
     .macro-lbl {
-      font-size: 10px;
+      font-size: 12px;
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--text-muted);
@@ -237,7 +237,7 @@
     <div style="position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(200,148,61,0.08) 0%,transparent 70%);pointer-events:none;"></div>
 
     <div class="max-w-2xl mx-auto px-8 py-20 md:py-28 text-center" style="position:relative;z-index:1;">
-      <p class="font-display italic mb-5" style="font-size:11px;color:var(--gold);opacity:0.7;letter-spacing:0.5em;text-transform:uppercase;">✦ Gann Family Kitchen ✦</p>
+      <p class="font-display italic mb-5" style="font-size:15px;color:var(--gold);opacity:0.7;letter-spacing:0.5em;text-transform:uppercase;">✦ Gann Family Kitchen ✦</p>
       <div style="width:56px;height:1px;background:var(--gold);opacity:0.4;margin:0 auto 18px;"></div>
       <h1 class="font-display italic leading-none mb-3" style="color:var(--text);font-size:clamp(2.4rem,7vw,5rem);font-weight:700;letter-spacing:-0.01em;">
         Texan Style<br>Chicken Spaghetti
@@ -249,22 +249,22 @@
       <div class="stat-row max-w-md mx-auto">
         <div class="stat-cell">
           <i data-lucide="clock" style="width:15px;height:15px;color:var(--gold);opacity:0.6;"></i>
-          <span class="font-display" style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--text-muted);">Prep</span>
+          <span class="font-display" style="font-size:12px;letter-spacing:0.3em;text-transform:uppercase;color:var(--text-muted);">Prep</span>
           <span class="font-display" style="font-size:1.15rem;font-weight:600;color:var(--text);">~25 min</span>
         </div>
         <div class="stat-cell">
           <i data-lucide="flame" style="width:15px;height:15px;color:var(--gold);opacity:0.6;"></i>
-          <span class="font-display" style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--text-muted);">Bake</span>
+          <span class="font-display" style="font-size:12px;letter-spacing:0.3em;text-transform:uppercase;color:var(--text-muted);">Bake</span>
           <span class="font-display" style="font-size:1.15rem;font-weight:600;color:var(--text);">25–30 min</span>
         </div>
         <div class="stat-cell">
           <i data-lucide="users" style="width:15px;height:15px;color:var(--gold);opacity:0.6;"></i>
-          <span class="font-display" style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--text-muted);">Serves</span>
+          <span class="font-display" style="font-size:12px;letter-spacing:0.3em;text-transform:uppercase;color:var(--text-muted);">Serves</span>
           <span class="font-display" style="font-size:1.15rem;font-weight:600;color:var(--text);">8–10</span>
         </div>
         <div class="stat-cell">
           <i data-lucide="thermometer" style="width:15px;height:15px;color:var(--gold);opacity:0.6;"></i>
-          <span class="font-display" style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--text-muted);">Temp</span>
+          <span class="font-display" style="font-size:12px;letter-spacing:0.3em;text-transform:uppercase;color:var(--text-muted);">Temp</span>
           <span class="font-display" style="font-size:1.15rem;font-weight:600;color:var(--text);">375°F</span>
         </div>
       </div>
@@ -277,11 +277,11 @@
   <!-- TABS -->
   <nav class="sticky top-0 z-30 w-full" style="background:var(--bg);border-bottom:1px solid var(--border-sub);">
     <div class="max-w-2xl mx-auto flex overflow-x-auto">
-      <button onclick="switchTab('ingredients')" data-tab="ingredients" class="tab-active flex-1 min-w-[100px] py-[14px] text-center cursor-pointer whitespace-nowrap px-3 transition-colors" style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:0.35em;text-transform:uppercase;background:none;border-top:none;border-left:none;border-right:none;outline:none;">Ingredients</button>
-      <button onclick="switchTab('instructions')" data-tab="instructions" class="tab-inactive flex-1 min-w-[100px] py-[14px] text-center cursor-pointer whitespace-nowrap px-3 transition-colors" style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:0.35em;text-transform:uppercase;background:none;border-top:none;border-left:none;border-right:none;outline:none;">Instructions</button>
-      <button onclick="switchTab('instantpot')" data-tab="instantpot" class="tab-inactive flex-1 min-w-[100px] py-[14px] text-center cursor-pointer whitespace-nowrap px-3 transition-colors" style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:0.35em;text-transform:uppercase;background:none;border-top:none;border-left:none;border-right:none;outline:none;">Instant Pot</button>
-      <button onclick="switchTab('tips')" data-tab="tips" class="tab-inactive flex-1 min-w-[100px] py-[14px] text-center cursor-pointer whitespace-nowrap px-3 transition-colors" style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:0.35em;text-transform:uppercase;background:none;border-top:none;border-left:none;border-right:none;outline:none;">Tips</button>
-      <button onclick="switchTab('nutrition')" data-tab="nutrition" class="tab-inactive flex-1 min-w-[100px] py-[14px] text-center cursor-pointer whitespace-nowrap px-3 transition-colors" style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:0.35em;text-transform:uppercase;background:none;border-top:none;border-left:none;border-right:none;outline:none;">Nutrition</button>
+      <button onclick="switchTab('ingredients')" data-tab="ingredients" class="tab-active flex-1 min-w-[100px] py-[14px] text-center cursor-pointer whitespace-nowrap px-3 transition-colors" style="font-family:'Cormorant Garamond',serif;font-size:15px;letter-spacing:0.35em;text-transform:uppercase;background:none;border-top:none;border-left:none;border-right:none;outline:none;">Ingredients</button>
+      <button onclick="switchTab('instructions')" data-tab="instructions" class="tab-inactive flex-1 min-w-[100px] py-[14px] text-center cursor-pointer whitespace-nowrap px-3 transition-colors" style="font-family:'Cormorant Garamond',serif;font-size:15px;letter-spacing:0.35em;text-transform:uppercase;background:none;border-top:none;border-left:none;border-right:none;outline:none;">Instructions</button>
+      <button onclick="switchTab('instantpot')" data-tab="instantpot" class="tab-inactive flex-1 min-w-[100px] py-[14px] text-center cursor-pointer whitespace-nowrap px-3 transition-colors" style="font-family:'Cormorant Garamond',serif;font-size:15px;letter-spacing:0.35em;text-transform:uppercase;background:none;border-top:none;border-left:none;border-right:none;outline:none;">Instant Pot</button>
+      <button onclick="switchTab('tips')" data-tab="tips" class="tab-inactive flex-1 min-w-[100px] py-[14px] text-center cursor-pointer whitespace-nowrap px-3 transition-colors" style="font-family:'Cormorant Garamond',serif;font-size:15px;letter-spacing:0.35em;text-transform:uppercase;background:none;border-top:none;border-left:none;border-right:none;outline:none;">Tips</button>
+      <button onclick="switchTab('nutrition')" data-tab="nutrition" class="tab-inactive flex-1 min-w-[100px] py-[14px] text-center cursor-pointer whitespace-nowrap px-3 transition-colors" style="font-family:'Cormorant Garamond',serif;font-size:15px;letter-spacing:0.35em;text-transform:uppercase;background:none;border-top:none;border-left:none;border-right:none;outline:none;">Nutrition</button>
     </div>
   </nav>
 
@@ -296,7 +296,7 @@
         <div class="ing-header">Protein</div>
         <div class="ing-row">
           <span class="ing-name">Rotisserie chicken, chopped or shredded
-            <span style="display:block;font-size:13px;color:var(--text-muted);margin-top:2px;">Or use Instant Pot chicken — see the Instant Pot tab</span>
+            <span style="display:block;font-size:15px;color:var(--text-muted);margin-top:2px;">Or use Instant Pot chicken — see the Instant Pot tab</span>
           </span>
           <span class="ing-qty">1 whole</span>
         </div>
@@ -307,7 +307,7 @@
         <div class="ing-header" style="margin-top:1px;">Sauce Base</div>
         <div class="ing-row">
           <span class="ing-name">Condensed cream of mushroom soup
-            <span style="display:block;font-size:13px;color:var(--text-muted);margin-top:2px;">Cream of chicken works just as well</span>
+            <span style="display:block;font-size:15px;color:var(--text-muted);margin-top:2px;">Cream of chicken works just as well</span>
           </span>
           <span class="ing-qty">2 cans (10.5 oz)</span>
         </div>
@@ -355,7 +355,7 @@
       <div class="mt-8 px-7 py-5" style="border-left:2px solid var(--gold);background:var(--gold-dim);">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
           <i data-lucide="lightbulb" style="width:15px;height:15px;color:var(--gold);flex-shrink:0;"></i>
-          <span class="font-display" style="font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);opacity:0.8;">Tip</span>
+          <span class="font-display" style="font-size:15px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);opacity:0.8;">Tip</span>
         </div>
         <p class="font-display italic" style="color:var(--text-muted);font-size:1.05rem;line-height:1.65;font-weight:300;">Leftovers reheat great with a splash of chicken broth or milk stirred in to loosen the sauce back up.</p>
       </div>
@@ -428,7 +428,7 @@
   <footer class="w-full text-center py-10 px-6" style="border-top:1px solid var(--border-sub);">
     <div class="orn max-w-[200px] mx-auto mb-3"><span>✦</span></div>
     <p class="font-display italic mb-1" style="font-size:1.6rem;color:var(--text);font-weight:400;">Dig In.</p>
-    <p style="color:var(--text-muted);font-size:13px;letter-spacing:0.05em;">Cleta's crowd-pleasing comfort classic</p>
+    <p style="color:var(--text-muted);font-size:15px;letter-spacing:0.05em;">Cleta's crowd-pleasing comfort classic</p>
   </footer>
 
 </div>
