@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cleta's Chicken Spaghetti</title>
+  <meta name="description" content="A big, cheesy Texas-style baked spaghetti casserole — crowd-feed energy, weeknight effort.">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0C0A08;
+      --surface: #161210;
+      --surface-2: #1E1916;
+      --text: #EDE3CF;
+      --text-muted: #7E7262;
+      --gold: #C8943D;
+      --gold-dim: rgba(200,148,61,0.12);
+      --rust: #B84022;
+      --border: rgba(200,148,61,0.18);
+      --border-sub: rgba(255,255,255,0.055);
+    }
+
+    html, body { height: 100%; margin: 0; }
+
+    body {
+      font-family: 'Crimson Pro', Georgia, serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 17px;
+      line-height: 1.65;
+    }
+
+    .font-display { font-family: 'Cormorant Garamond', Georgia, serif; }
+
+    /* ── Grain overlay ── */
+    .grain { position: relative; }
+    .grain::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)' opacity='0.12'/%3E%3C/svg%3E");
+      pointer-events: none;
+      mix-blend-mode: screen;
+      opacity: 0.35;
+    }
+
+    /* ── Tab bar ── */
+    .tab-active  { color: var(--gold) !important; border-bottom: 1px solid var(--gold) !important; }
+    .tab-inactive { color: var(--text-muted) !important; border-bottom: 1px solid transparent !important; }
+    .tab-inactive:hover { color: var(--text) !important; }
+
+    /* ── Ornamental divider ── */
+    .orn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .orn::before, .orn::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      opacity: 0.28;
+    }
+    .orn span {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 10px;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0.72;
+    }
+
+    /* ── Ingredient table ── */
+    .ing-header {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding: 13px 22px;
+      background: var(--gold-dim);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .ing-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 10px 22px;
+      border-bottom: 1px solid var(--border-sub);
+      gap: 16px;
+      transition: background 0.18s;
+    }
+    .ing-row:hover { background: rgba(200,148,61,0.04); }
+    .ing-row:last-child { border-bottom: none; }
+    .ing-name { font-size: 16px; color: var(--text); }
+    .ing-qty {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--gold);
+      white-space: nowrap;
+    }
+
+    /* ── Instruction step ── */
+    .step {
+      position: relative;
+      padding: 26px 26px 26px 74px;
+      background: var(--surface);
+      border: 1px solid var(--border-sub);
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .step:hover { border-color: var(--border); }
+    .step-ghost {
+      position: absolute;
+      left: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 120px;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--gold);
+      opacity: 0.055;
+      pointer-events: none;
+      user-select: none;
+    }
+    .step-badge {
+      position: absolute;
+      left: 22px;
+      top: 26px;
+      width: 30px;
+      height: 30px;
+      border: 1px solid rgba(200,148,61,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gold);
+    }
+
+    /* ── Tip card ── */
+    .tip-card {
+      background: var(--surface);
+      border: 1px solid var(--border-sub);
+      padding: 24px;
+      position: relative;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .tip-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 2px; height: 100%;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      opacity: 0.45;
+    }
+    .tip-card:hover { border-color: var(--border); transform: translateY(-2px); }
+
+    /* ── Macro grid ── */
+    .macro-cell {
+      padding: 20px 12px;
+      text-align: center;
+      border-right: 1px solid var(--border-sub);
+    }
+    .macro-cell:last-child { border-right: none; }
+    .macro-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 38px;
+      font-weight: 600;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 5px;
+    }
+    .macro-lbl {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* ── Progress bars ── */
+    .bar-track { width:100%; height:2px; background:rgba(255,255,255,0.07); border-radius:2px; margin-top:7px; }
+    .bar-fill  { height:2px; border-radius:2px; background:var(--gold); }
+
+    /* ── Animations ── */
+    .fade-in { animation: fadeUp 0.45s cubic-bezier(0.22,1,0.36,1) both; }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(18px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .steps-wrap > .step {
+      opacity: 0;
+      animation: fadeUp 0.4s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+    .steps-wrap > .step:nth-child(1) { animation-delay:0.04s; }
+    .steps-wrap > .step:nth-child(2) { animation-delay:0.10s; }
+    .steps-wrap > .step:nth-child(3) { animation-delay:0.16s; }
+    .steps-wrap > .step:nth-child(4) { animation-delay:0.22s; }
+    .steps-wrap > .step:nth-child(5) { animation-delay:0.28s; }
+    .steps-wrap > .step:nth-child(6) { animation-delay:0.34s; }
+
+    /* ── Hero stat row ── */
+    .stat-row { display:flex; border:1px solid rgba(255,255,255,0.09); }
+    .stat-cell {
+      flex:1;
+      display:flex; flex-direction:column; align-items:center; gap:3px;
+      padding:16px 20px;
+      border-right:1px solid rgba(255,255,255,0.09);
+    }
+    .stat-cell:last-child { border-right:none; }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width:4px; height:4px; }
+    ::-webkit-scrollbar-track { background:var(--bg); }
+    ::-webkit-scrollbar-thumb { background:rgba(200,148,61,0.25); border-radius:2px; }
+  </style>
+</head>
+<body class="h-full">
+<div id="app" class="h-full w-full overflow-auto">
+
+  <!-- HERO -->
+  <header class="grain relative w-full overflow-hidden" style="background:linear-gradient(155deg,#221508 0%,#120E09 45%,#0C0A08 100%);">
+    <div style="position:absolute;top:24px;left:24px;width:40px;height:40px;border-left:1px solid var(--gold);border-top:1px solid var(--gold);opacity:0.22;"></div>
+    <div style="position:absolute;top:24px;right:24px;width:40px;height:40px;border-right:1px solid var(--gold);border-top:1px solid var(--gold);opacity:0.22;"></div>
+    <div style="position:absolute;bottom:64px;left:24px;width:40px;height:40px;border-left:1px solid var(--gold);border-bottom:1px solid var(--gold);opacity:0.22;"></div>
+    <div style="position:absolute;bottom:64px;right:24px;width:40px;height:40px;border-right:1px solid var(--gold);border-bottom:1px solid var(--gold);opacity:0.22;"></div>
+    <div style="position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(200,148,61,0.08) 0%,transparent 70%);pointer-events:none;"></div>
+
+    <div class="max-w-2xl mx-auto px-8 py-20 md:py-28 text-center" style="position:relative;z-index:1;">
+      <p class="font-display italic mb-5" style="font-size:11px;color:var(--gold);opacity:0.7;letter-spacing:0.5em;text-transform:uppercase;">✦ Featured Recipe ✦</p>
+      <div style="width:56px;height:1px;background:var(--gold);opacity:0.4;margin:0 auto 18px;"></div>
+      <h1 class="font-display italic leading-none mb-3" style="color:var(--text);font-size:clamp(2.8rem,8vw,5.5rem);font-weight:700;letter-spacing:-0.01em;">
+        Cleta's Chicken<br>Spaghetti
+      </h1>
+      <div style="width:56px;height:1px;background:var(--gold);opacity:0.4;margin:18px auto 22px;"></div>
+      <p class="font-display italic mb-12" style="color:var(--text-muted);font-size:clamp(1rem,2.5vw,1.25rem);font-weight:300;line-height:1.6;">
+        A big, cheesy Texas-style baked spaghetti casserole —<br class="hidden md:block"> crowd-feed energy, weeknight effort.
+      </p>
+      <div class="stat-row max-w-sm mx-auto">
+        <div class="stat-cell">
+          <i data-lucide="clock" style="width:15px;height:15px;color:var(--gold);opacity:0.6;"></i>
+          <span class="font-display" style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--text-muted);">Prep</span>
+          <span class="font-display" style="font-size:1.25rem;font-weight:600;color:var(--text);">25 min</span>
+        </div>
+        <div class="stat-cell">
+          <i data-lucide="flame" style="width:15px;height:15px;color:var(--gold);opacity:0.6;"></i>
+          <span class="font-display" style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--text-muted);">Cook</span>
+          <span class="font-display" style="font-size:1.25rem;font-weight:600;color:var(--text);">25–30 min</span>
+        </div>
+        <div class="stat-cell">
+          <i data-lucide="users" style="width:15px;height:15px;color:var(--gold);opacity:0.6;"></i>
+          <span class="font-display" style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--text-muted);">Serves</span>
+          <span class="font-display" style="font-size:1.25rem;font-weight:600;color:var(--text);">8–10</span>
+        </div>
+      </div>
+    </div>
+    <svg class="w-full" viewBox="0 0 1440 52" fill="none" preserveAspectRatio="none" style="display:block;margin-bottom:-1px;">
+      <path d="M0 52V18C200 46 480 4 720 18C960 32 1240 6 1440 22V52H0Z" fill="var(--bg)"/>
+    </svg>
+  </header>
+
+  <!-- TABS -->
+  <nav class="sticky top-0 z-30 w-full" style="background:var(--bg);border-bottom:1px solid var(--border-sub);">
+    <div class="max-w-2xl mx-auto flex overflow-x-auto">
+      <button onclick="switchTab('ingredients')" data-tab="ingredients" class="tab-active flex-1 min-w-[100px] py-[14px] text-center cursor-pointer whitespace-nowrap px-3 transition-colors" style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:0.35em;text-transform:uppercase;background:none;border-top:none;border-left:none;border-right:none;outline:none;">Ingredients</button>
+      <button onclick="switchTab('instructions')" data-tab="instructions" class="tab-inactive flex-1 min-w-[100px] py-[14px] text-center cursor-pointer whitespace-nowrap px-3 transition-colors" style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:0.35em;text-transform:uppercase;background:none;border-top:none;border-left:none;border-right:none;outline:none;">Instructions</button>
+      <button onclick="switchTab('tips')" data-tab="tips" class="tab-inactive flex-1 min-w-[100px] py-[14px] text-center cursor-pointer whitespace-nowrap px-3 transition-colors" style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:0.35em;text-transform:uppercase;background:none;border-top:none;border-left:none;border-right:none;outline:none;">Chef's Tips</button>
+      <button onclick="switchTab('nutrition')" data-tab="nutrition" class="tab-inactive flex-1 min-w-[100px] py-[14px] text-center cursor-pointer whitespace-nowrap px-3 transition-colors" style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:0.35em;text-transform:uppercase;background:none;border-top:none;border-left:none;border-right:none;outline:none;">Nutrition</button>
+    </div>
+  </nav>
+
+  <!-- CONTENT -->
+  <main class="max-w-2xl mx-auto px-6 md:px-8 py-12">
+
+    <!-- INGREDIENTS -->
+    <section id="panel-ingredients" class="fade-in">
+      <div class="orn"><span>What You'll Need</span></div>
+      <h2 class="font-display italic mb-8" style="font-size:2.4rem;font-weight:600;color:var(--text);">Ingredients</h2>
+      <div style="border:1px solid var(--border-sub);background:var(--surface);">
+        <div class="ing-header">Protein &amp; Pasta</div>
+        <div class="ing-row"><span class="ing-name">Thin spaghetti</span><span class="ing-qty">1 lb</span></div>
+        <div class="ing-row"><span class="ing-name">Rotisserie chicken, chopped or shredded</span><span class="ing-qty">1 whole</span></div>
+        <div class="ing-header" style="margin-top:1px;">Sauce &amp; Cheese</div>
+        <div class="ing-row"><span class="ing-name">Condensed cream of mushroom soup</span><span class="ing-qty">2 cans</span></div>
+        <div class="ing-row"><span class="ing-name">Rotel diced tomatoes with hatch green chilies</span><span class="ing-qty">2 cans</span></div>
+        <div class="ing-row"><span class="ing-name">Shredded Colby Jack cheese</span><span class="ing-qty">16 oz</span></div>
+        <div class="ing-row"><span class="ing-name">Velveeta, cubed</span><span class="ing-qty">8 oz</span></div>
+        <div class="ing-row"><span class="ing-name">Sour cream</span><span class="ing-qty">½ cup</span></div>
+        <div class="ing-row"><span class="ing-name">Whipped cream cheese</span><span class="ing-qty">4 oz</span></div>
+        <div class="ing-header" style="margin-top:1px;">Aromatics &amp; Seasonings</div>
+        <div class="ing-row"><span class="ing-name">Small onion, finely chopped</span><span class="ing-qty">1</span></div>
+        <div class="ing-row"><span class="ing-name">Garlic cloves, finely chopped</span><span class="ing-qty">3–4</span></div>
+        <div class="ing-row"><span class="ing-name">Better Than Bouillon roasted chicken base</span><span class="ing-qty">1 tsp</span></div>
+        <div class="ing-row"><span class="ing-name">Lawry's seasoning salt</span><span class="ing-qty">1 tsp</span></div>
+        <div class="ing-row"><span class="ing-name">Onion powder</span><span class="ing-qty">1 tsp</span></div>
+        <div class="ing-row"><span class="ing-name">Garlic powder</span><span class="ing-qty">1 tsp</span></div>
+        <div class="ing-row"><span class="ing-name">Paprika</span><span class="ing-qty">1 tsp</span></div>
+        <div class="ing-row"><span class="ing-name">Dried parsley</span><span class="ing-qty">1 tsp</span></div>
+        <div class="ing-row"><span class="ing-name">Cumin</span><span class="ing-qty">½ tsp</span></div>
+        <div class="ing-row"><span class="ing-name">Cracked black pepper</span><span class="ing-qty">½ tsp</span></div>
+        <div class="ing-row"><span class="ing-name">Salt</span><span class="ing-qty">½ tsp</span></div>
+      </div>
+    </section>
+
+    <!-- INSTRUCTIONS -->
+    <section id="panel-instructions" class="fade-in hidden">
+      <div class="orn"><span>Step by Step</span></div>
+      <h2 class="font-display italic mb-8" style="font-size:2.4rem;font-weight:600;color:var(--text);">Instructions</h2>
+      <div class="steps-wrap space-y-3">
+        <div class="step"><div class="step-ghost">1</div><div class="step-badge">1</div><h3 class="font-display mb-2" style="font-size:1.15rem;font-weight:600;color:var(--text);">Boil the Pasta</h3><p style="color:var(--text-muted);font-size:16px;line-height:1.7;">Cook the thin spaghetti in well-salted water until just al dente — it will finish cooking in the oven, so don't overcook it here. Drain and set aside.</p></div>
+        <div class="step"><div class="step-ghost">2</div><div class="step-badge">2</div><h3 class="font-display mb-2" style="font-size:1.15rem;font-weight:600;color:var(--text);">Melt the Velveeta</h3><p style="color:var(--text-muted);font-size:16px;line-height:1.7;">Cube the Velveeta and melt it in the microwave in a small bowl, stirring every 30–60 seconds until fully smooth. Set aside.</p></div>
+        <div class="step"><div class="step-ghost">3</div><div class="step-badge">3</div><h3 class="font-display mb-2" style="font-size:1.15rem;font-weight:600;color:var(--text);">Mix the Sauce</h3><p style="color:var(--text-muted);font-size:16px;line-height:1.7;">Add your chopped chicken to a large mixing bowl. Add the melted Velveeta, both cans of cream of mushroom soup, both cans of Rotel (with juice), sour cream, cream cheese, all seasonings, and half the Colby Jack. Mix until fully combined into a thick, saucy mixture.</p></div>
+        <div class="step"><div class="step-ghost">4</div><div class="step-badge">4</div><h3 class="font-display mb-2" style="font-size:1.15rem;font-weight:600;color:var(--text);">Assemble in Baking Dish</h3><p style="color:var(--text-muted);font-size:16px;line-height:1.7;">Spray a 9×13 baking dish with non-stick spray. Add the drained spaghetti, then pour the chicken mixture over the top. Toss everything together until fully coated and evenly distributed.</p></div>
+        <div class="step"><div class="step-ghost">5</div><div class="step-badge">5</div><h3 class="font-display mb-2" style="font-size:1.15rem;font-weight:600;color:var(--text);">Top with Cheese</h3><p style="color:var(--text-muted);font-size:16px;line-height:1.7;">Sprinkle the remaining Colby Jack evenly over the top of the casserole.</p></div>
+        <div class="step"><div class="step-ghost">6</div><div class="step-badge">6</div><h3 class="font-display mb-2" style="font-size:1.15rem;font-weight:600;color:var(--text);">Bake &amp; Serve</h3><p style="color:var(--text-muted);font-size:16px;line-height:1.7;">Bake uncovered at 375°F for 25–30 minutes, until the cheese is melted, bubbly, and starting to go golden at the edges. Let rest 5–10 minutes before serving.</p></div>
+      </div>
+    </section>
+
+    <!-- TIPS -->
+    <section id="panel-tips" class="fade-in hidden">
+      <div class="orn"><span>From the Kitchen</span></div>
+      <h2 class="font-display italic mb-6" style="font-size:2.4rem;font-weight:600;color:var(--text);">Chef's Tips</h2>
+      <blockquote class="mb-8 px-7 py-5" style="border-left:2px solid var(--gold);background:var(--gold-dim);">
+        <p class="font-display italic" style="color:var(--text-muted);font-size:1.2rem;line-height:1.65;font-weight:300;">"Everything comes together in one casserole dish — minimal cleanup, maximum flavor."</p>
+      </blockquote>
+      <div class="grid gap-4 md:grid-cols-2">
+        <div class="tip-card"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><i data-lucide="flame" style="width:17px;height:17px;color:var(--gold);flex-shrink:0;"></i><h3 class="font-display" style="font-size:1.1rem;font-weight:600;color:var(--text);">One Dish, One Hour</h3></div><p style="color:var(--text-muted);font-size:15px;line-height:1.7;">This is a true crowd-pleaser. The beauty is that everything comes together in one casserole dish — minimal cleanup, maximum flavor.</p></div>
+        <div class="tip-card"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><i data-lucide="layers" style="width:17px;height:17px;color:var(--gold);flex-shrink:0;"></i><h3 class="font-display" style="font-size:1.1rem;font-weight:600;color:var(--text);">Cheese Choice</h3></div><p style="color:var(--text-muted);font-size:15px;line-height:1.7;">Colby Jack and Velveeta are the backbone of this sauce. If you can't find Rotel, use diced tomatoes mixed with diced canned green chilies in a pinch.</p></div>
+        <div class="tip-card"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><i data-lucide="clock" style="width:17px;height:17px;color:var(--gold);flex-shrink:0;"></i><h3 class="font-display" style="font-size:1.1rem;font-weight:600;color:var(--text);">Make Ahead Magic</h3></div><p style="color:var(--text-muted);font-size:15px;line-height:1.7;">Assemble completely, cover, and refrigerate for up to 24 hours. Just add 5–10 extra minutes to the baking time.</p></div>
+        <div class="tip-card"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><i data-lucide="utensils" style="width:17px;height:17px;color:var(--gold);flex-shrink:0;"></i><h3 class="font-display" style="font-size:1.1rem;font-weight:600;color:var(--text);">Leftovers Tip</h3></div><p style="color:var(--text-muted);font-size:15px;line-height:1.7;">Leftovers reheat beautifully with a splash of chicken broth or milk stirred in to loosen the sauce back up.</p></div>
+      </div>
+    </section>
+
+    <!-- NUTRITION -->
+    <section id="panel-nutrition" class="fade-in hidden">
+      <div class="orn"><span>Nutritional Info</span></div>
+      <h2 class="font-display italic mb-2" style="font-size:2.4rem;font-weight:600;color:var(--text);">Nutrition</h2>
+      <p style="color:var(--text-muted);font-size:14px;margin-bottom:28px;">Per serving (1 of 8–10) — approximate values</p>
+      <div style="border:1px solid var(--border-sub);background:var(--surface);">
+        <div class="grid grid-cols-2 sm:grid-cols-4" style="border-bottom:1px solid var(--border-sub);">
+          <div class="macro-cell"><div class="macro-val">420</div><div class="macro-lbl">Calories</div></div>
+          <div class="macro-cell"><div class="macro-val">28g</div><div class="macro-lbl">Protein</div></div>
+          <div class="macro-cell"><div class="macro-val">22g</div><div class="macro-lbl">Fat</div></div>
+          <div class="macro-cell"><div class="macro-val">32g</div><div class="macro-lbl">Carbs</div></div>
+        </div>
+        <div style="padding:24px;display:flex;flex-direction:column;gap:18px;">
+          <div><div style="display:flex;justify-content:space-between;font-size:15px;"><span>Protein</span><span style="font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--gold);">28g</span></div><div class="bar-track"><div class="bar-fill" style="width:56%;"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:15px;"><span>Total Fat</span><span style="font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--gold);">22g</span></div><div class="bar-track"><div class="bar-fill" style="width:44%;"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:15px;"><span>Carbohydrates</span><span style="font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--gold);">32g</span></div><div class="bar-track"><div class="bar-fill" style="width:64%;"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:15px;"><span>Fiber</span><span style="font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--text-muted);">2g</span></div><div class="bar-track"><div class="bar-fill" style="width:8%;background:var(--text-muted);"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:15px;"><span>Sodium</span><span style="font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--text-muted);">850mg</span></div><div class="bar-track"><div class="bar-fill" style="width:34%;background:var(--text-muted);"></div></div></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="w-full text-center py-10 px-6" style="border-top:1px solid var(--border-sub);">
+    <div class="orn max-w-[200px] mx-auto mb-3"><span>✦</span></div>
+    <p class="font-display italic mb-1" style="font-size:1.6rem;color:var(--text);font-weight:400;">Dig In.</p>
+    <p style="color:var(--text-muted);font-size:13px;letter-spacing:0.05em;">Cleta's crowd-pleasing comfort classic</p>
+  </footer>
+
+</div>
+<script>
+  const tabs = ['ingredients','instructions','tips','nutrition'];
+  function switchTab(id) {
+    tabs.forEach(t => {
+      const panel = document.getElementById('panel-' + t);
+      const btn   = document.querySelector(`[data-tab="${t}"]`);
+      if (t === id) {
+        panel.classList.remove('hidden');
+        panel.classList.remove('fade-in');
+        void panel.offsetWidth;
+        panel.classList.add('fade-in');
+        btn.classList.remove('tab-inactive');
+        btn.classList.add('tab-active');
+      } else {
+        panel.classList.add('hidden');
+        btn.classList.remove('tab-active');
+        btn.classList.add('tab-inactive');
+      }
+    });
+  }
+  lucide.createIcons();
+</script>
+</body>
+</html>
