@@ -228,6 +228,13 @@
     @media print {
       * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
+      /* Critical: remove fixed height/scroll containers so all content prints */
+      html, body, #app {
+        height: auto !important;
+        min-height: 0 !important;
+        overflow: visible !important;
+      }
+
       body { background: #fff !important; color: #1a1a1a !important; font-size: 11pt; }
 
       /* show all panels, hide nav chrome */
@@ -243,12 +250,13 @@
         padding: 24pt 0 16pt !important;
       }
       header * { color: #1a1a1a !important; }
-      header svg { display: none; }
+      header svg, header ~ svg, .wave-divider { display: none !important; }
       header .grain::after { display: none; }
       header div[style*="position:absolute"] { display: none; } /* corner marks & glow */
 
       /* print button hidden */
-      button[onclick="window.print()"] { display: none !important; }
+      button[onclick="printRecipe()"] { display: none !important; }
+      #fab-print { display: none !important; }
 
       /* section headings */
       h1 { font-size: 28pt !important; margin-bottom: 4pt !important; }
@@ -341,7 +349,7 @@
 
       <!-- Print button -->
       <div class="text-center mt-8">
-        <button onclick="window.print()" style="display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border:1px solid rgba(200,148,61,0.35);background:rgba(200,148,61,0.07);color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:0.22em;text-transform:uppercase;cursor:pointer;transition:background 0.2s,border-color 0.2s;" onmouseover="this.style.background='rgba(200,148,61,0.14)';this.style.borderColor='rgba(200,148,61,0.6)'" onmouseout="this.style.background='rgba(200,148,61,0.07)';this.style.borderColor='rgba(200,148,61,0.35)'">
+        <button onclick="printRecipe()" style="display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border:1px solid rgba(200,148,61,0.35);background:rgba(200,148,61,0.07);color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:0.22em;text-transform:uppercase;cursor:pointer;transition:background 0.2s,border-color 0.2s;" onmouseover="this.style.background='rgba(200,148,61,0.14)';this.style.borderColor='rgba(200,148,61,0.6)'" onmouseout="this.style.background='rgba(200,148,61,0.07)';this.style.borderColor='rgba(200,148,61,0.35)'">
           <i data-lucide="printer" style="width:14px;height:14px;"></i>
           Print or Save as PDF
         </button>
@@ -513,7 +521,10 @@
 </div>
 <script>
   const tabs = ['ingredients','instructions','instantpot','tips','nutrition'];
+  let currentTab = 'ingredients';
+
   function switchTab(id) {
+    currentTab = id;
     tabs.forEach(t => {
       const panel = document.getElementById('panel-' + t);
       const btn   = document.querySelector(`[data-tab="${t}"]`);
@@ -531,11 +542,36 @@
       }
     });
   }
+
+  function printRecipe() {
+    // Force-show every panel so all sections appear in the PDF
+    tabs.forEach(t => {
+      const p = document.getElementById('panel-' + t);
+      p.classList.remove('hidden');
+      p.style.setProperty('display', 'block', 'important');
+    });
+    document.getElementById('fab-print').style.setProperty('display', 'none', 'important');
+
+    // Defer print so the browser repaints the DOM changes first —
+    // without this, window.print() snapshots the page before panels are visible
+    setTimeout(() => window.print(), 120);
+  }
+
+  window.addEventListener('afterprint', () => {
+    // Restore hidden panels after dialog closes
+    tabs.forEach(t => {
+      const p = document.getElementById('panel-' + t);
+      p.style.removeProperty('display');
+      if (t !== currentTab) p.classList.add('hidden');
+    });
+    document.getElementById('fab-print').style.removeProperty('display');
+  });
+
   lucide.createIcons();
 </script>
 
 <!-- Floating print button -->
-<button id="fab-print" onclick="window.print()" title="Print or Save as PDF"
+<button id="fab-print" onclick="printRecipe()" title="Print or Save as PDF"
   style="position:fixed;bottom:28px;right:28px;z-index:999;
     display:flex;align-items:center;gap:10px;
     padding:14px 22px;
