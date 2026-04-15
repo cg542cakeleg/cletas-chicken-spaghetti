@@ -544,28 +544,12 @@
   }
 
   function printRecipe() {
-    // Force-show every panel so all sections appear in the PDF
-    tabs.forEach(t => {
-      const p = document.getElementById('panel-' + t);
-      p.classList.remove('hidden');
-      p.style.setProperty('display', 'block', 'important');
-    });
-    document.getElementById('fab-print').style.setProperty('display', 'none', 'important');
-
-    // Defer print so the browser repaints the DOM changes first —
-    // without this, window.print() snapshots the page before panels are visible
-    setTimeout(() => window.print(), 120);
+    // CSS @media print already reveals .hidden panels and hides nav/buttons,
+    // so we can call window.print() synchronously (required for iOS Safari —
+    // wrapping in setTimeout moves the call outside the user-gesture context
+    // and triggers the "blocked from automatically printing" dialog).
+    window.print();
   }
-
-  window.addEventListener('afterprint', () => {
-    // Restore hidden panels after dialog closes
-    tabs.forEach(t => {
-      const p = document.getElementById('panel-' + t);
-      p.style.removeProperty('display');
-      if (t !== currentTab) p.classList.add('hidden');
-    });
-    document.getElementById('fab-print').style.removeProperty('display');
-  });
 
   lucide.createIcons();
 </script>
